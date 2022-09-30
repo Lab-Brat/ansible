@@ -12,7 +12,8 @@ n3  ansible_host=do.lab
 nj ansible_host=jenkins.lab
 
 [nodes:vars]
-ansible_user=vagrant
+ansible_user=root
+ansible_ssh_private_key_file=vagrant/vg_box
 
 [do:vars]
 ansible_user=boink
