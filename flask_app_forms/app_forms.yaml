@@ -12,7 +12,7 @@
     samples: "{{ git_app }}/samples"
     env_app: 'app.py'
     env_mod: 'development'
-    db_port: 5433
+    db_port: 5432
     db_user: "{{ user }}"
     db_name: 'masq_forms'
     db_pass: 'password'
