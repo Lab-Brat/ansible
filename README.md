@@ -1,36 +1,17 @@
-# Ansible Scripts
-## About the directory
-Directory contains configuration files and ansible playbooks.  
-They are meant to be used together with the Vagrant setup at ../vagrant.  
+### Ansible Scripts
 
-## Install
-* install ansible
-```
-python3 -m pip install ansible
-```
-* append your nodes to the ```inventory``` file at /etc/hosts
-* for jenkins.yaml external library is required, to install:
-```
-ansible-galaxy collection install community.docker
-```  
-* for app_forms.yaml external library is required, to install:
-```
-ansible-galaxy collection install community.postgresql
-```
+#### Basics
+Cheatsheets on how to get Ansible up and running can be found [here](https://github.com/Lab-Brat/cheatsheets/tree/main/ansible).
 
-## Run
-* test connectivity with the nodes:  
-```
-ansible all -m ping
-```
-* if to connection is established, run the playbook: 
-```
-ansible-playbook -i inventory <playbook>.yaml
-```
-
-## Playbooks
-* app_forms: install flask-masque web app, all the dependencies, PostgreSQL on AlmaLinux 8
-* docker.yaml: install Docker on and enable in on Fedora Linux
-* init_config.yaml: inistial OS configuration
-* jenkins.yaml: install Jenkins as a Docker container on Fedora Linux (requires ```docker-compose.yaml``` file in ```configs``` directory)
-* moderen_commands.yaml: install modern alternative to classic linux commands, line ```lsd``` for ```ls```, ```bat``` for ```cat``` etc.
+#### Playbooks
+* configs
+  * docker-compose.yaml: docker compose instructions that install Jenkins server
+* flask_app_forms
+  * app_forms.yaml: install flask-masque web app on Fedora
+  * vars.yaml: variables for `app_forms.yaml`
+* personal_setup
+  * setup.yaml: personal configuration setup.
+* docker.yaml: install Docker on Fedora.
+* init_config.yaml: inistial OS configuration.
+* jenkins.yaml: install Jenkins as a Docker container on Fedora (requires `docker-compose.yaml` file in `configs` directory)
+* modern_commands.yaml: install modern alternative to classic linux commands, likr `lsd` for `ls` `bat` for `cat` etc.
