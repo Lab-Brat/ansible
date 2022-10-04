@@ -34,8 +34,8 @@
 - name: Allow any host to connect (For testing). 
   lineinfile:
     path: '{{ pg_hba }}'
-    regexp: "host all all 127.0.0.1/32 ident"
-    line:   "host all all 127.0.0.1/32 trust"
+    regexp: "host    all             all             127.0.0.1/32            ident"
+    line:   "host    all             all             127.0.0.1/32            trust"
 
 - name: Restart PostgreSQL for changes to take effect.
   service:
