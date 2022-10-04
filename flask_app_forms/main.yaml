@@ -6,6 +6,7 @@
 
   roles:
     - disable_selinux
+    - postgres
 
   tasks:
     - name: create user if it doesn't exist
@@ -24,8 +25,6 @@
         - python3-pip
         - python3-psycopg2
         - git
-        - postgresql
-        - postgresql-server
 
     - name: install Python libraries
       pip: 
@@ -69,44 +68,6 @@
         recurse: yes
         owner: "{{ user }}"
         group: "{{ user }}"
-
-    - name: find out if PostgreSQL is initialized
-      stat:
-        path: "{{ pg_hba }}"
-      register: postgres_data 
-
-    - name: initialize postgres
-      shell: "/usr/bin/postgresql-setup --initdb"
-      when: not postgres_data.stat.exists
-
-    - name: start PostgreSQL server
-      service: 
-        name: postgresql
-        state: started 
-        enabled: yes
-
-    - name: change postgresql.conf
-      lineinfile:
-        path: '{{ pg_conf }}'
-        regexp: "listen_addresses = 'localhost'"
-        line: "listen_addresses = '*'"
-
-    - name: change pg_hba.conf - change port
-      lineinfile:
-        path: '{{ pg_conf }}'
-        regexp: "port = 5432"
-        line: "port = {{ db_port }}"
-
-    - name: change pg_hba.conf
-      lineinfile:
-        path: '{{ pg_hba }}'
-        regexp: "host    all             all             127.0.0.1/32            ident"
-        line: "host    all             all             127.0.0.1/32            trust"
-
-    - name: restart postgresql for config changes to take effect
-      service:
-        name: postgresql
-        state: restarted
 
     - name: remove app database if it exists
       postgresql_db:
