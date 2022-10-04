@@ -1,0 +1,21 @@
+---
+- name: Install dependencies.
+  dnf:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - python3-pip
+    - python3-psycopg2
+    - git
+
+- name: Install Python dependencies.
+  pip: 
+    name: "{{ item }}"
+    extra_args: --user
+  with_items:
+    - Flask
+    - flask-migrate
+    - SQLAlchemy
+    - psycopg2
+    - flask_login
+  become_user: "{{ user }}"

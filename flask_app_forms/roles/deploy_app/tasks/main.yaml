@@ -1,0 +1,85 @@
+---
+- name: Create user if it doesn't exist.
+  user:
+    name: "{{ user }}"
+    shell: /bin/bash
+    home: "/home/{{ user }}"
+    groups: wheel
+    append: yes
+
+- name: Clone github repository.
+  git:
+    repo: '{{ gitrepo }}'
+    dest: '{{ git_app }}'
+    clone: yes
+    update: no
+  become_user: "{{ user }}"
+
+- name: Set environmental variables.
+  lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
+  with_items: "{{ os_environment }}"
+
+- name: Create a folder for database dumps.
+  file:
+    state: directory
+    path: "{{ dumps }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: Change ownership of the app folder.
+  file:
+    path: '{{ git_app }}'
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: Ensure the firewall is running.
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Allow port 5000 in firewalld.
+  firewalld:
+    port: 5000/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Restart firewall after changes.
+  service:
+    name: firewalld
+    state: restarted
+
+- name: Check if the migrations folder exists.
+  stat:
+    path: "{{ git_app }}/migrations"
+  register: migrations
+
+- name: Initialize local database.
+  shell: '~/.local/bin/flask db init'
+  args:
+    chdir: "{{ git_app }}"
+  become_user: "{{ user }}"
+  when: not migrations.stat.exists
+
+- name: Migrate database.
+  shell: '~/.local/bin/flask db migrate'
+  args:
+    chdir: "{{ git_app }}"
+  become_user: "{{ user }}"
+
+- name: Upgrade the database.
+  shell: '~/.local/bin/flask db upgrade'
+  args:
+    chdir: "{{ git_app }}"
+  become_user: "{{ user }}"
+
+- name: Add sample data.
+  command: "sh {{ samples }}/add_entries.sh"
+  become_user: "{{ user }}"

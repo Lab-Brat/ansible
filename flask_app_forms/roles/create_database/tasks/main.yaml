@@ -1,0 +1,35 @@
+---
+- name: Remove app database if it exists.
+  postgresql_db:
+    state: absent
+    name: "{{ db_name }}"
+    port: "{{ db_port }}"
+  become: true
+  become_user: postgres
+
+- name: Create app database.
+  postgresql_db:
+    state: present
+    name: "{{ db_name }}"
+    port: "{{ db_port }}"
+  become: true
+  become_user: postgres
+
+- name: Create database user.
+  postgresql_user:
+    state: present
+    name: "{{ db_user }}"
+    password: "{{ db_pass }}"
+    port: "{{ db_port }}"
+  become: true
+  become_user: postgres
+
+- name: Grant database user access.
+  postgresql_privs:
+    type: database
+    database: "{{ db_name }}"
+    roles: "{{ db_user }}"
+    grant_option: yes
+    privs: all
+    port: "{{ db_port }}"
+  become_user: postgres
