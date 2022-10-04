@@ -1,8 +1,11 @@
 ---
-- hosts: all
+- hosts: nodes
   become: yes
   vars_files: 
     - vars.yaml
+
+  roles:
+    - disable_selinux
 
   tasks:
     - name: create user if it doesn't exist
@@ -35,25 +38,6 @@
         - psycopg2
         - flask_login
       become_user: "{{ user }}"
-
-    - name: disable SELinux
-      ansible.posix.selinux:
-        state: disabled
-      register: selinuxdisabled
-
-    - name: reboot for SELinux change to take effect
-      shell: "sleep 5 && reboot"
-      async: 1
-      poll: 0
-      when: selinuxdisabled is changed
-
-    - name: wait for the reboot to complete
-      wait_for_connection:
-        connect_timeout: 30
-        sleep: 5
-        delay: 5
-        timeout: 300
-      when: selinuxdisabled is changed
 
     - name: clone github repository with forms app
       git:
