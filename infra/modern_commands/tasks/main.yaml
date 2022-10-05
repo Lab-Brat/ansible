@@ -1,42 +1,26 @@
 ---
-- hosts: all
-  become: yes
-  vars:
-    - bashrc: '/home/vagrant/.bashrc'
+- name: Install commands with package manager.
+  dnf:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - bat
 
-  tasks:
-  - block: # install modern linux commands on Linux
-      - name: install commands with package manager
-        dnf:
-          name: '{{ item }}'
-          state: present
-        with_items:
-          - lsd
-          - bat
+- name: Ensure that custom alias information line is there.
+  lineinfile:
+    name: "{{ bashrc }}"
+    line: "######## Custom Aliases Created By Ansible ########"
+    state: present
+  check_mode: yes
+  register: custom_alias_notify
 
-      - name: ensure that custom alias information line is there
-        lineinfile:
-          name: "{{ bashrc }}"
-          line: "######## Custom Aliases Created By Ansible ########"
-          state: present
-        check_mode: yes
-        register: custom_alias_notify
+- name: Add alias title.
+  ansible.builtin.lineinfile:
+    path: "{{ bashrc }}"
+    line: "\n######## Custom Aliases Created By Ansible ########"
+  when: custom_alias_notify is changed
 
-      - name: add alias title
-        ansible.builtin.lineinfile:
-          path: "{{ bashrc }}"
-          line: "\n######## Custom Aliases Created By Ansible ########"
-        when: custom_alias_notify is changed
-
-      - name: add alias to lsd to bashrc
-        ansible.builtin.lineinfile:
-          path: "{{ bashrc }}"
-          line: "alias ls=lsd"
-   
-      - name: add alias to bat
-        ansible.builtin.lineinfile:
-          path: "{{ bashrc }}"
-          line: "alias cat=bat"
-
-    when: ansible_distribution == 'Fedora'
-
+- name: Add alias to bat.
+  ansible.builtin.lineinfile:
+    path: "{{ bashrc }}"
+    line: "alias cat=bat"
