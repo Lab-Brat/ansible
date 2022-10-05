@@ -1,31 +1,22 @@
 ---
-- hosts: all
-  become: yes
-  vars:
-    - url: 'https://download.docker.com/linux/fedora/docker-ce.repo'
+- name: Install plugins.
+  dnf:
+    name: 'dnf-plugins-core'
+    state: present
 
-  tasks:
-  - block: # install docker-engine on Fedora Linux
-      - name: install dnf plugins
-        dnf:
-          name: 'dnf-plugins-core'
-          state: present
+- name: Install docker-ce repository.
+  command: dnf config-manager --add-repo {{ docker_url }} 
 
-      - name: install docker-ce repository
-        command: dnf config-manager --add-repo {{ url }} 
+- name: Install docker
+  dnf:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - docker-ce 
+    - docker-ce-cli 
+    - containerd.io 
+    - docker-compose-plugin
 
-      - name: install docker
-        dnf:
-          name: '{{ item }}'
-          state: present
-        with_items:
-          - docker-ce 
-          - docker-ce-cli 
-          - containerd.io 
-          - docker-compose-plugin
-   
-      - name: start Docker
-        service: name='docker' state=started enabled=yes
-    
-    when: ansible_distribution == 'Fedora'
+- name: Start Docker
+  service: name='docker' state=started enabled=yes
 
