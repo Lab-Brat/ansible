@@ -1,43 +1,31 @@
 ---
-- hosts: all
-  become: yes
-  vars:
-    - src_jenkins: '/var/jenkins'
-    - src_compose: '/home/labbrat/ansible/configs/docker-compose.yaml'
-    - init_pass: '/var/lib/docker/volumes/jenkins_jenkins-data/_data/secrets/initialAdminPassword'
+- name: Install docker-compose.
+  dnf:
+    name: 'docker-compose'
+    state: present
 
-  tasks:
-  - block: # install Jenkins in a container on Fedora Linux
-      - name: install docker-compose
-        dnf:
-          name: 'docker-compose'
-          state: present
-      
-      - name: create directory for compose file if it doesn't exist
-        ansible.builtin.file:
-          path: "{{ src_jenkins }}"
-          state: directory
-          mode: '0755'
+- name: Create directory for compose file.
+  ansible.builtin.file:
+    path: "{{ src_jenkins }}"
+    state: directory
+    mode: '0755'
 
-      - name: copy docker-compose file to remote host
-        ansible.builtin.copy:
-          src: "{{ src_compose }}" 
-          dest: "{{ src_jenkins }}"
-          mode: '0644'
+- name: Copy docker-compose.yaml to remote host.
+  ansible.builtin.copy:
+    src: "{{ src_compose }}" 
+    dest: "{{ src_jenkins }}"
+    mode: '0644'
 
-      - name: launch docker-compose to run and configure Jenkins
-        community.docker.docker_compose:
-          project_src: "{{ src_jenkins }}"
-        register: output
-  
-      - ansible.builtin.debug:
-          var: output
+- name: Wait 5 seconds for the container to start.
+  pause:
+    seconds: 5
 
-      - name: get initial admin password
-        command: cat "{{ init_pass }}" 
-        register: pass_out
+- name: Launch docker-compose.
+  community.docker.docker_compose:
+    project_src: "{{ src_jenkins }}"
 
-      - debug: msg="{{ pass_out.stdout }}"
+- name: Print initial admin password.
+  command: cat "{{ init_pass }}" 
+  register: pass_out
 
-    when: ansible_distribution == 'Fedora'
-
+- debug: msg="{{ pass_out.stdout }}"

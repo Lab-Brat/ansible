@@ -6,5 +6,5 @@
 
   roles:
     - docker
-    # - jenkins
+    - jenkins
     # - modern_commands
