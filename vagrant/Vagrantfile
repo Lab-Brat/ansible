@@ -1,0 +1,53 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  
+  servers=[
+    {
+      :hostname => "node0",
+      :ip       => "192.168.56.10",
+      :box      => "fedora/36-cloud-base",
+      :key      => "/vagrant/vg_box.pub",
+      :ram      => "2048",
+      :cpu      => 1
+    },
+    {
+      :hostname => "node1",
+      :ip       => "192.168.56.3",
+      :box      => "ubuntu/focal64",
+      :key      => "/vagrant/vg_box.pub",
+      :ram      => "1024",
+      :cpu      => 1
+    },
+    {
+      :hostname => "node2",
+      :ip       => "192.168.56.4",
+      :box      => "almalinux/9",
+      :key      => "/vagrant/vg_box.pub",
+      :ram      => "1024",
+      :cpu      => 1
+    }
+  ]
+
+  servers.each do |machine|
+    config.vm.define machine[:hostname] do |node|
+      node.vm.box = machine[:box]
+      node.vm.hostname = machine[:hostname]
+      node.vm.network "private_network", 
+	                 ip: machine[:ip]
+      
+      node.vm.provider "virtualbox" do |vb|
+        vb.gui = false
+        vb.memory = machine[:ram]
+        vb.cpus = machine[:cpu]
+
+      node.vm.provision "shell" do |s|
+	    s.inline = "cat $1 >> /home/vagrant/.ssh/authorized_keys"
+        s.args = machine[:key] 
+      end
+    end
+  end
+end
+end
+
