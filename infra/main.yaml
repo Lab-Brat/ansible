@@ -5,6 +5,11 @@
   - vars.yaml
 
   roles:
-    # - docker
-    # - jenkins
-    - modern_commands
+    - role: docker
+      tags: docker
+
+    - role: jenkins
+      tags: jenkins
+
+    - role: modern_commands
+      tags: mod
