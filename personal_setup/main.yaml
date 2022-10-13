@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: localhost
   become: yes
   vars:
     - user: 'labbrat'
@@ -8,15 +8,15 @@
     - bashrc: "/home/{{ user }}/.bashrc_test"
 
   tasks:
-    - name: get latest lsd version link
+    - name: Get latest lsd link.
       shell: curl -s "{{ repo_lsd }}" | grep "{{ grep_lsd }}" | awk -F '"' '{print $4}'
       register: lsd_link
 
-    - name: download and install deb packages
+    - name: Download and install lsd deb package.
       apt:
         deb: "{{ lsd_link.stdout_lines[0] }}"
 
-    - name: install stuff
+    - name: Install other software.
       apt:
         name: '{{ item }}'
         state: present
@@ -26,9 +26,8 @@
         - openconnect
         - python3-venv
         - python3-pip
-      when: ansible_os_family == "Debian"
 
-    - name: install Ansible
+    - name: Install Ansible.
       pip:
         name: "{{ item }}"
         extra_args: --user
@@ -36,7 +35,7 @@
         - ansible 
       become_user: "{{ user }}"
 
-    - name: ensure that custom alias information line is there
+    - name: Ensure that custom alias information line is present.
       lineinfile:
         name: "{{ bashrc }}"
         line: "######## Custom Aliases Created By Ansible ########"
@@ -44,14 +43,14 @@
       check_mode: yes
       register: custom_alias_notify
 
-    - name: add alias title
+    - name: Add alias title.
       lineinfile:
         path: "{{ bashrc }}"
         line: "\n######## Custom Aliases Created By Ansible ########"
       when: custom_alias_notify is changed
  
-    - name: add aliases and PATH to bashrc
-      ansible.builtin.lineinfile:
+    - name: Add aliases and PATH to bashrc.
+      lineinfile:
         path: "{{ bashrc }}"
         line: "{{ item }}"
       loop:
