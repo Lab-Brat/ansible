@@ -1,28 +1,32 @@
 ---
 - name: Install docker-compose.
-  dnf:
+  package:
     name: 'docker-compose'
     state: present
 
+- name: Remove files from previous installation.
+  file:
+    path: "{{ jenkins_dir }}"
+    state: absent
+
 - name: Create directory for compose file.
-  ansible.builtin.file:
+  file:
     path: "{{ src_jenkins }}"
     state: directory
     mode: '0755'
 
-- name: Copy docker-compose.yaml to remote host.
-  ansible.builtin.copy:
+- name: Copy docker-compose.yaml.
+  copy:
     src: "{{ src_compose }}" 
     dest: "{{ src_jenkins }}"
     mode: '0644'
 
+- name: Launch docker-compose.
+  shell: "docker-compose -f {{ src_compose }} up -d"
+
 - name: Wait 5 seconds for the container to start.
   pause:
     seconds: 5
-
-- name: Launch docker-compose.
-  community.docker.docker_compose:
-    project_src: "{{ src_jenkins }}"
 
 - name: Print initial admin password.
   command: cat "{{ init_pass }}" 
