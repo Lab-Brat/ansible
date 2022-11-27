@@ -1,0 +1,20 @@
+---
+- name: Install stuff.
+  pacman:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - vim
+    - git
+    - openconnect
+    - transmission-gtk
+    - python-virtualenv
+    - python-pip
+
+- name: Install Ansible.
+  pip:
+    name: "{{ item }}"
+    extra_args: --user
+  with_items:
+    - ansible 
+  become_user: "{{ user }}"
