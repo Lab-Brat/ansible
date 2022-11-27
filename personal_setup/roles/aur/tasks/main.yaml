@@ -1,0 +1,17 @@
+---
+- name: Gather the package facts
+  package_facts:
+    manager: auto
+  
+- name: Get yay repository.
+  git:
+    repo: 'https://aur.archlinux.org/yay-bin.git'
+    dest: '/tmp/yay-bin'
+    clone: yes
+  become_user: "{{ user }}"
+  when: "'yay-bin' not in ansible_facts.packages"
+
+- name: Build yay-bin.
+  shell: cd /tmp/yay-bin && makepkg -si
+  become_user: "{{ user }}"
+  when: "'yay-bin' not in ansible_facts.packages"
