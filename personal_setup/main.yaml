@@ -3,29 +3,20 @@
   become: yes
   vars:
     - user: 'labbrat'
-    - repo_lsd: 'https://api.github.com/repos/Peltoche/lsd/releases/latest'
-    - grep_lsd: 'browser_download_url.*lsd_.*_amd64.deb'
-    - bashrc: "/home/{{ user }}/.bashrc_test"
+    - bashrc: "/home/{{ user }}/.zshrc"
 
   tasks:
-    - name: Get latest lsd link.
-      shell: curl -s "{{ repo_lsd }}" | grep "{{ grep_lsd }}" | awk -F '"' '{print $4}'
-      register: lsd_link
-
-    - name: Download and install lsd deb package.
-      apt:
-        deb: "{{ lsd_link.stdout_lines[0] }}"
-
-    - name: Install other software.
-      apt:
+    - name: Install stuff.
+      pacman:
         name: '{{ item }}'
         state: present
       with_items:
         - vim
         - git
         - openconnect
-        - python3-venv
-        - python3-pip
+        - transmission-gtk
+        - python-virtualenv
+        - python-pip
 
     - name: Install Ansible.
       pip:
@@ -55,8 +46,12 @@
         line: "{{ item }}"
       loop:
         - export scripts="/home/{{ user }}/scripts"
-        - export PATH=$PATH:$scripts
         - export pip_path="/home/{{ user }}/.local/bin"
-        - export PATH=$PATH:$pip_path
-        - alias py=python3
-        - alias gt="git add . && git commit -m $CMT && git push
+        - export PATH=$PATH:$scripts:$pip_path
+        - alias sv='source venv/bin/activate'
+        - alias ga="git add"
+        - alias gc="git commit -m"
+        - alias gp="git push"
+        - alias gs="git status"
+        - alias gh="git config user.email 'xoovoox@protonmail.com' && git config user.name 'Lab-Brat'"
+      when: custom_alias_notify is changed
