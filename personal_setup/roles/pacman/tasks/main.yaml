@@ -10,6 +10,13 @@
     - transmission-gtk
     - python-virtualenv
     - python-pip
+    - htop
+    - whois
+    - bind
+    - vlc
+    - transmission-gtk
+    - freerdp
+    - remmina
 
 - name: Install Ansible.
   pip:

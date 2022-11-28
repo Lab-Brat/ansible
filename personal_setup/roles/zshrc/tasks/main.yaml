@@ -27,4 +27,6 @@
     - alias gp="git push"
     - alias gs="git status"
     - alias gh="git config user.email 'xoovoox@protonmail.com' && git config user.name 'Lab-Brat'"
+    - alias ping='ping -c 2'
+
   when: custom_alias_notify is changed
