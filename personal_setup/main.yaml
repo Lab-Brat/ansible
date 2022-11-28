@@ -3,7 +3,7 @@
   become: yes
   vars:
     - user: 'labbrat'
-    - bashrc: "/home/{{ user }}/.zshrc"
+    - zshrc: "/home/{{ user }}/.zshrc"
 
   roles:
     - role: pacman
