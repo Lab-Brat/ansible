@@ -15,3 +15,16 @@
   shell: cd /tmp/yay-bin && makepkg -si
   become_user: "{{ user }}"
   when: "'yay-bin' not in ansible_facts.packages"
+
+- name: Install stuff.
+  kewlfft.aur.aur:
+    use: yay
+    name: "{{ item }}"
+    state: present
+  with_items:
+      - brave-bin
+      - vivaldi
+      - protonvpn-cli
+      - visual-studio-code-bin
+      - slack-desktop
+  become_user: "{{ user }}"
