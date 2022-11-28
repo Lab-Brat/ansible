@@ -9,3 +9,4 @@
     - role: pacman
     - role: zshrc
     - role: aur
+    - role: docker
