@@ -1,7 +1,7 @@
 ---
 - name: Ensure that custom alias information line is present.
   lineinfile:
-    name: "{{ bashrc }}"
+    name: "{{ zshrc }}"
     line: "######## Custom Aliases Created By Ansible ########"
     state: present
   check_mode: yes
@@ -9,13 +9,13 @@
 
 - name: Add alias title.
   lineinfile:
-    path: "{{ bashrc }}"
+    path: "{{ zshrc }}"
     line: "\n######## Custom Aliases Created By Ansible ########"
   when: custom_alias_notify is changed
 
-- name: Add aliases and PATH to bashrc.
+- name: Add aliases and PATH to zshrc.
   lineinfile:
-    path: "{{ bashrc }}"
+    path: "{{ zshrc }}"
     line: "{{ item }}"
   loop:
     - export scripts="/home/{{ user }}/scripts"
