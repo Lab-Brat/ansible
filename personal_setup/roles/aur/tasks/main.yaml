@@ -27,4 +27,5 @@
       - protonvpn-cli
       - visual-studio-code-bin
       - slack-desktop
+      - telegram-desktop-bin
   become_user: "{{ user }}"

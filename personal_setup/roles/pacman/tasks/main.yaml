@@ -17,6 +17,7 @@
     - transmission-gtk
     - freerdp
     - remmina
+    - zoom
 
 - name: Install Ansible.
   pip:
