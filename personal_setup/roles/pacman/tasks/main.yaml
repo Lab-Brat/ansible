@@ -24,11 +24,13 @@
     - zoom
     - "{{ kernel_v.stdout }}"
     - virtualbox
+    - vagrant
 
 - name: Add user to vboxusers group.
   user:
     name: "{{ user }}"
     groups: vboxusers
+    append: yes
 
 - name: Install Ansible.
   pip:
