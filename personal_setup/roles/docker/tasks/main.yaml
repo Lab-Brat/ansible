@@ -1,7 +1,9 @@
 ---
-- name: Install Docker.
+- name: Install Docker and Docker Compose.
   pacman:
-    name: docker
+    name:
+      - docker
+      - docker-compose
     state: present
 
 - name: Enable Docker service.
