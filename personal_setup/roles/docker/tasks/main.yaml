@@ -1,10 +1,11 @@
 ---
 - name: Install Docker and Docker Compose.
   pacman:
-    name:
-      - docker
-      - docker-compose
+    name: "{{ item }}"
     state: present
+  with_items:
+    - docker
+    - docker-compose
 
 - name: Enable Docker service.
   service:
