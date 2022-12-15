@@ -1,17 +1,7 @@
-### Ansible Scripts
+### Ansible
+Repository with `site.yaml` that launches all of my other Ansible roles.
 
-#### Basics
-Cheatsheets on how to get Ansible up and running can be found [here](https://github.com/Lab-Brat/cheatsheets/tree/main/ansible).
-
-#### Playbooks
-* configs
-  * docker-compose.yaml: docker compose instructions that install Jenkins server
-* flask_app_forms
-  * app_forms.yaml: install flask-masque web app on Fedora
-  * vars.yaml: variables for `app_forms.yaml`
-* personal_setup
-  * setup.yaml: personal configuration setup.
-* docker.yaml: install Docker on Fedora.
-* init_config.yaml: inistial OS configuration.
-* jenkins.yaml: install Jenkins as a Docker container on Fedora (requires `docker-compose.yaml` file in `configs` directory)
-* modern_commands.yaml: install modern alternative to classic linux commands, likr `lsd` for `ls` `bat` for `cat` etc.
+#### Roles
+* flask_app_forms: install and configure [flask_masque](https://github.com/Lab-Brat/flask_masque)
+* personal_setup: configure personal installation of Arch or Arch based distros.
+* infra: install and configure different infrascructure components, such as Docker, Jenkins, rsyslog server etc.
