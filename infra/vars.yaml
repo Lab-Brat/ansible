@@ -1,6 +1,0 @@
-docker_url: 'https://download.docker.com/linux/fedora/docker-ce.repo'
-src_jenkins: '/var/jenkins'
-src_compose: 'roles/jenkins/files/docker-compose.yaml'
-jenkins_dir: '/var/lib/docker/volumes/files_jenkins-data'
-init_pass: "{{ jenkins_dir }}/_data/secrets/initialAdminPassword"
-bashrc: '/home/vagrant/.bashrc'
