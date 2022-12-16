@@ -4,3 +4,6 @@
 [submodule "roles/ansible_personal"]
 	path = roles/ansible_personal
 	url = git@github.com:Lab-Brat/ansible_personal.git
+[submodule "roles/ansible_flask"]
+	path = roles/ansible_flask
+	url = git@github.com:Lab-Brat/ansible_flask.git

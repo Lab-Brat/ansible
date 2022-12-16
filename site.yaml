@@ -8,3 +8,6 @@
 
     - role: ansible_jenkins
       tags: jenkins
+
+    - role: ansible_flask_masque
+      tags: flask
