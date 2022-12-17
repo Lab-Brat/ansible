@@ -1,13 +1,19 @@
 ---
-- hosts: all
+- hosts: localhost
   become: yes
   
-  roles:
-    - role: ansible_personal
+  tasks:
+    - name: Include ansible_personal role.
+      include_role:
+        name: ansible_personal
       tags: personal
 
-    - role: ansible_jenkins
+    - name: Include ansible_jenkins role.
+      include_role:
+        name: ansible_jenkins
       tags: jenkins
 
-    - role: ansible_flask_masque
+    - name: Include ansible_flask role.
+      include_role:
+        name: ansible_flask
       tags: flask
