@@ -17,3 +17,8 @@
       include_role:
         name: ansible_flask
       tags: flask
+
+    - name: Include ansible_server role.
+      include_role:
+        name: ansible_server
+      tags: server
