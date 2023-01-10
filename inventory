@@ -1,14 +1,6 @@
 [nodes]
-flask_masque.lab  ansible_host=192.168.56.62
-
-[alma]
-alma.lab ansible_host=192.168.56.111
+node1.lab  ansible_host=192.168.56.62
 
 [nodes:vars]
 ansible_user=vagrant
 ansible_ssh_private_key_file=vagrant/vg_box
-
-[alma:vars]
-ansible_user=vagrant
-ansible_ssh_private_key_file=vagrant/vg_box
-

@@ -1,5 +1,5 @@
 ---
-- hosts: alma
+- hosts: nodes
   become: yes
   
   tasks:
