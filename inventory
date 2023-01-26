@@ -1,6 +1,5 @@
 [nodes]
-node1.lab  ansible_host=192.168.56.62
+node1.lab  ansible_host=192.168.56.63
 
-[nodes:vars]
-ansible_user=vagrant
-ansible_ssh_private_key_file=vagrant/vg_box
+[alma]
+alma.lab ansible_host=192.168.56.111
