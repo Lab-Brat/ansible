@@ -10,3 +10,6 @@
 [submodule "roles/ansible_flask"]
 	path = roles/ansible_flask
 	url = git@github.com:Lab-Brat/ansible_flask.git
+[submodule "roles/ansible_postfix_dovecot"]
+	path = roles/ansible_postfix_dovecot
+	url = git@github.com:Lab-Brat/ansible_postfix_dovecot.git

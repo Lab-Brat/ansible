@@ -22,3 +22,8 @@
       include_role:
         name: ansible_server
       tags: server
+
+    - name: Include ansible_postfix_dovecot role.
+      import_role:
+        name: ansible_postfix_dovecot
+      tags: mailpd
