@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ var_host | default('nodes') }}"
+- hosts: "{{ var_host | default('all') }}"
   become: yes
   
   tasks:
